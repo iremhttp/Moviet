@@ -14,6 +14,7 @@ class MovieDetailViewController: UIViewController {
     let backgroundImageView: UIImageView = UIImageView()
     let label: UILabel = UILabel()
     let sublabel: UILabel = UILabel()
+    let starStackView: UIStackView = UIStackView()
         
     var indexPathRow: Int?
     var navigationTitle: String?
@@ -21,6 +22,7 @@ class MovieDetailViewController: UIViewController {
     var backdropPath: String?
     var originalTitle: String?
     var releaseDate: String?
+    var voteAverage: Double?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,8 +83,51 @@ class MovieDetailViewController: UIViewController {
         if let originalTitle = originalTitle{
             label.text = originalTitle
         }
+        view.addSubview(sublabel)
+        sublabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sublabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
+            sublabel.leadingAnchor.constraint(equalTo: label.leadingAnchor),
+            sublabel.trailingAnchor.constraint(equalTo: label.trailingAnchor)
+        ])
+        sublabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        sublabel.textColor = .gray
+
+        if let releaseDate = releaseDate {
+            sublabel.text = releaseDate
+        }
         
-                
+        view.addSubview(starStackView)
+        starStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            starStackView.topAnchor.constraint(equalTo: sublabel.bottomAnchor, constant: 10),
+            starStackView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 20),
+            starStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -10)
+        ])
+
+        starStackView.axis = .horizontal
+        starStackView.spacing = 2
+
+        for _ in 1...10 {
+            let starLabel = UILabel()
+            starLabel.text = "☆"
+            starLabel.textColor = .systemOrange
+            starStackView.addArrangedSubview(starLabel)
+        }
+
+        if let voteAverage = voteAverage {
+            let filledStarCount = Int(voteAverage / 10.0 * 10)
+            
+            for i in 0..<starStackView.arrangedSubviews.count {
+                if i < filledStarCount {
+                    (starStackView.arrangedSubviews[i] as? UILabel)?.text = "★"
+                } else {
+                    (starStackView.arrangedSubviews[i] as? UILabel)?.text = "☆"
+                }
+            }
+        }
+
+
     }
 
 }

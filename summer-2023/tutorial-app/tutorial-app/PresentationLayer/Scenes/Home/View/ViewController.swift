@@ -91,6 +91,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         nextViewController.posterPath = viewModel.movie(at: indexPath.row)?.posterPath ?? ""
         nextViewController.backdropPath = viewModel.movie(at: indexPath.row)?.backdropPath ?? ""
         nextViewController.originalTitle = viewModel.movie(at: indexPath.row)?.originalTitle ?? ""
+        nextViewController.releaseDate = viewModel.movie(at: indexPath.row)?.releaseDate ?? ""
+        nextViewController.voteAverage = viewModel.movie(at: indexPath.row)?.voteAverage
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 
