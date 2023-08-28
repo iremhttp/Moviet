@@ -93,6 +93,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         nextViewController.originalTitle = viewModel.movie(at: indexPath.row)?.originalTitle ?? ""
         nextViewController.releaseDate = viewModel.movie(at: indexPath.row)?.releaseDate ?? ""
         nextViewController.voteAverage = viewModel.movie(at: indexPath.row)?.voteAverage
+        nextViewController.overview = viewModel.movie(at: indexPath.row)?.overview ?? ""
+        nextViewController.genreIDS = viewModel.movie(at: indexPath.row)?.genreIDS
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 

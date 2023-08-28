@@ -15,6 +15,8 @@ class MovieDetailViewController: UIViewController {
     let label: UILabel = UILabel()
     let sublabel: UILabel = UILabel()
     let starStackView: UIStackView = UIStackView()
+    let overviewText: UILabel = UILabel()
+    let genre: UILabel = UILabel()
         
     var indexPathRow: Int?
     var navigationTitle: String?
@@ -23,6 +25,8 @@ class MovieDetailViewController: UIViewController {
     var originalTitle: String?
     var releaseDate: String?
     var voteAverage: Double?
+    var overview: String?
+    var genreIDS: [Int]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,8 +130,43 @@ class MovieDetailViewController: UIViewController {
                 }
             }
         }
+        
+        view.addSubview(genre)
+        genre.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            genre.topAnchor.constraint(equalTo: starStackView.bottomAnchor, constant: 10),
+            genre.leadingAnchor.constraint(equalTo: starStackView.leadingAnchor),
+            genre.trailingAnchor.constraint(equalTo: starStackView.trailingAnchor)
+        ])
+        genre.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        genre.textColor = .gray
+        
+        if let genreIDS = genreIDS {
+            let genreText = genreIDS.map { String($0) }.joined(separator: ", ")
+                        genre.text = genreText
+        }
+
+
+        
+        view.addSubview(overviewText)
+        overviewText.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            overviewText.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 30),
+            overviewText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            overviewText.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            overviewText.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -10)
+        ])
+        overviewText.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        overviewText.textColor = .gray
+        overviewText.numberOfLines = 0
+        overviewText.lineBreakMode = .byWordWrapping
+
+        if let overview = overview {
+            overviewText.text = overview
+        }
+        
+        
 
 
     }
-
 }
