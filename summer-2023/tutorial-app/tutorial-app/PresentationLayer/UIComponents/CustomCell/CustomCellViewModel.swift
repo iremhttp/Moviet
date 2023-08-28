@@ -12,4 +12,7 @@ struct CustomCellViewModel {
     let title: String
     let subtitle: String
     let posterPath: String
+    let backdropPath: String
+    let isAdult: Bool
+    let voteAverage: Double
 }

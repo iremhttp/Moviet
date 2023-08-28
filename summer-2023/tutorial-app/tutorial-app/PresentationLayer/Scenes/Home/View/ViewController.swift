@@ -11,6 +11,7 @@ import Kingfisher
 final class ViewController: UIViewController {
     
     let customTableView: UITableView = UITableView()
+    let appLogoImageView: UIImageView = UIImageView(image: UIImage(named: "applogo.png"))
     
     var viewModel: HomeViewModel = HomeViewModel()
     
@@ -25,7 +26,6 @@ final class ViewController: UIViewController {
         loadPopularMovies()
         viewModelBindings()
     }
-    
     func loadPopularMovies() {
         viewModel.loadPopularMoview()
     }
@@ -37,10 +37,23 @@ final class ViewController: UIViewController {
     }
     
     private func prepareUI() {
+        
+        view.backgroundColor = .black
+                
+        view.addSubview(appLogoImageView)
+        appLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            appLogoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            appLogoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            appLogoImageView.widthAnchor.constraint(equalToConstant: 100),
+            appLogoImageView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        customTableView.backgroundColor = .black
         view.addSubview(customTableView)
         customTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            customTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            customTableView.topAnchor.constraint(equalTo: appLogoImageView.bottomAnchor, constant: 10),
             customTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             customTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             customTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -48,15 +61,18 @@ final class ViewController: UIViewController {
     }
     
     private func initTableView() {
-        customTableView.delegate = self
-        customTableView.dataSource = self
-        customTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "DefaultCell")
-    }
+           customTableView.delegate = self
+           customTableView.dataSource = self
+           customTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "DefaultCell")
+       }
 
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
-    
+   
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 260
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows()
     }
@@ -65,26 +81,14 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         print(indexPath.row)
         let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath) as? CustomTableViewCell
         
-        cell?.viewModel = CustomCellViewModel(title: viewModel.movie(at: indexPath.row)?.title ?? "",
-                                              subtitle: viewModel.movie(at: indexPath.row)?.releaseDate ?? "",
-                                              posterPath: viewModel.movie(at: indexPath.row)?.posterPath ?? "")
+        cell?.viewModel = CustomCellViewModel(title: viewModel.movie(at: indexPath.row)?.title ?? "", subtitle: viewModel.movie(at: indexPath.row)?.releaseDate ?? "", posterPath: viewModel.movie(at: indexPath.row)?.posterPath ?? "",backdropPath: viewModel.movie(at: indexPath.row)?.backdropPath ?? "",isAdult: viewModel.movie(at: indexPath.row)?.adult ?? false,voteAverage: viewModel.movie(at: indexPath.row)?.voteAverage ?? 0.0)
         return cell ?? UITableViewCell()
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextViewController = MovieDetailViewController()
         nextViewController.indexPathRow = indexPath.row
         nextViewController.navigationTitle = viewModel.movie(at: indexPath.row)?.title ?? ""
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 150
-        } else if indexPath.row == 1 {
-            return 400
-        } else {
-            return 50
-        }
-    }
 }
+
