@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class MovieDetailViewController: UIViewController {
     
     let ImagePath: String = "https://image.tmdb.org/t/p/w500"
@@ -17,6 +18,7 @@ class MovieDetailViewController: UIViewController {
     let starStackView: UIStackView = UIStackView()
     let overviewText: UILabel = UILabel()
     let genre: UILabel = UILabel()
+    let popularityView:UILabel = UILabel()
         
     var indexPathRow: Int?
     var navigationTitle: String?
@@ -27,6 +29,7 @@ class MovieDetailViewController: UIViewController {
     var voteAverage: Double?
     var overview: String?
     var genreIDS: [Int]?
+    var popularity: Double?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +49,7 @@ class MovieDetailViewController: UIViewController {
                     backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
                     backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    backgroundImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3) 
+                    backgroundImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3)
                 ])
         backgroundImageView.alpha = 0.5
         if let backdropPath = backdropPath {
@@ -165,8 +168,19 @@ class MovieDetailViewController: UIViewController {
             overviewText.text = overview
         }
         
-        
+        view.addSubview(popularityView)
+        popularityView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            popularityView.topAnchor.constraint(equalTo: overviewText.bottomAnchor, constant: 25),
+            popularityView.leadingAnchor.constraint(equalTo: overviewText.leadingAnchor),
+            popularityView.trailingAnchor.constraint(equalTo: overviewText.trailingAnchor)])
 
+        popularityView.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        popularityView.textColor = .lightGray
+        if let popularity = popularity {
+            let formattedPopularity = String(format: "%.2f", popularity)
+            popularityView.text = "Popularity: \(formattedPopularity)"
+        }
 
     }
 }
