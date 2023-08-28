@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 
+
 final class ViewController: UIViewController {
     
     let customTableView: UITableView = UITableView()
@@ -96,6 +97,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         nextViewController.overview = viewModel.movie(at: indexPath.row)?.overview ?? ""
         nextViewController.genreIDS = viewModel.movie(at: indexPath.row)?.genreIDS
         nextViewController.popularity = viewModel.movie(at: indexPath.row)?.popularity
+        
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 

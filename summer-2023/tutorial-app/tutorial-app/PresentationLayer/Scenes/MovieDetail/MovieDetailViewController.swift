@@ -30,6 +30,7 @@ class MovieDetailViewController: UIViewController {
     var overview: String?
     var genreIDS: [Int]?
     var popularity: Double?
+    var circularProgressBar: CircularProgressBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,14 +174,24 @@ class MovieDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             popularityView.topAnchor.constraint(equalTo: overviewText.bottomAnchor, constant: 25),
             popularityView.leadingAnchor.constraint(equalTo: overviewText.leadingAnchor),
-            popularityView.trailingAnchor.constraint(equalTo: overviewText.trailingAnchor)])
+            popularityView.trailingAnchor.constraint(equalTo: overviewText.trailingAnchor)
+        ])
 
         popularityView.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         popularityView.textColor = .lightGray
-        if let popularity = popularity {
-            let formattedPopularity = String(format: "%.2f", popularity)
-            popularityView.text = "Popularity: \(formattedPopularity)"
-        }
 
+        if let popularity = popularity {
+            let percentage = min((popularity / 4500), 1) // Calculate percentage, capped at 1
+            circularProgressBar = CircularProgressBar(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+            view.addSubview(circularProgressBar)
+            circularProgressBar.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                circularProgressBar.topAnchor.constraint(equalTo: popularityView.bottomAnchor, constant: 10),
+                circularProgressBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                circularProgressBar.widthAnchor.constraint(equalToConstant: 100),
+                circularProgressBar.heightAnchor.constraint(equalTo: circularProgressBar.widthAnchor)
+            ])
+            circularProgressBar.setProgress(Float(percentage))
+        }
     }
 }
