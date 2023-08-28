@@ -88,7 +88,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let nextViewController = MovieDetailViewController()
         nextViewController.indexPathRow = indexPath.row
         nextViewController.navigationTitle = viewModel.movie(at: indexPath.row)?.title ?? ""
+        nextViewController.posterPath = viewModel.movie(at: indexPath.row)?.posterPath ?? ""
+        nextViewController.backdropPath = viewModel.movie(at: indexPath.row)?.backdropPath ?? ""
+        nextViewController.originalTitle = viewModel.movie(at: indexPath.row)?.originalTitle ?? ""
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+
 }
 
